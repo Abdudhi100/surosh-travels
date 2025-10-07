@@ -1,26 +1,98 @@
+/* globals.css */
 @import "tailwindcss";
+@import "tw-animate-css";
 
+/* ---------- Custom Theme Variables ---------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.75rem;
+
+  /* Core Colors */
+  --color-primary: #0A1E3F; /* Navy Blue */
+  --color-primary-foreground: #FFFFFF;
+
+  --color-background: #FFFFFF; /* White */
+  --color-foreground: #1F2933; /* Dark Gray */
+
+  --color-accent-sky: #4DA6FF; /* Sky Blue */
+  --color-accent-gold: #FFD700; /* Gold */
+  --color-secondary: #C0C4C9; /* Silver Gray */
+
+  --color-muted-light: #F7F8FA; /* Light Gray */
+  --color-muted-dark: #1F2933;  /* Dark Gray */
+
+  /* UI Elements */
+  --color-card-bg: var(--color-background);
+  --color-card-text: var(--color-foreground);
+  --color-border: var(--color-secondary);
+  --color-ring: var(--color-accent-gold);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  --color-background: #1F2933; /* Dark Gray */
+  --color-foreground: #FFFFFF;  /* White */
+  --color-card-bg: #0A1E3F;     /* Navy Blue card bg */
+  --color-card-text: #FFFFFF;   /* White text on card */
+  --color-border: #C0C4C9;      /* Silver Gray border */
+  --color-ring: #FFD700;        /* Gold focus ring */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ---------- Base Layer ---------- */
+@layer base {
+  *, *::before, *::after {
+    @apply border-solid outline-none;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-[var(--color-background)] text-[var(--color-foreground)] font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold text-[var(--color-foreground)];
+  }
+
+  a {
+    @apply text-[var(--color-accent-sky)] hover:text-[var(--color-accent-gold)] transition-colors;
+  }
+
+  button {
+    @apply rounded-lg font-medium transition-all focus:ring-2 focus:ring-[var(--color-ring)];
+  }
+
+  input, textarea, select {
+    @apply border border-[var(--color-border)] rounded-md px-4 py-2 bg-[var(--color-background)] text-[var(--color-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--color-ring)] transition;
+  }
+
+  /* Card / Panel */
+  .card {
+    @apply bg-[var(--color-card-bg)] text-[var(--color-card-text)] rounded-lg shadow-md p-6;
+  }
+
+  /* Section backgrounds */
+  .section-light {
+    @apply bg-[var(--color-background)];
+  }
+  .section-muted {
+    @apply bg-[var(--color-muted-light)];
+  }
+  .section-dark {
+    @apply bg-[var(--color-muted-dark)] text-white;
+  }
+
+  /* CTA Buttons */
+  .btn-primary {
+    @apply bg-[var(--color-accent-sky)] text-white px-6 py-2 rounded-lg hover:bg-[var(--color-accent-gold)] transition;
+  }
+
+  .btn-secondary {
+    @apply bg-[var(--color-primary)] text-white px-6 py-2 rounded-lg hover:bg-[var(--color-accent-gold)] transition;
+  }
+
+  /* Links */
+  .link-primary {
+    @apply text-[var(--color-accent-sky)] hover:text-[var(--color-accent-gold)] underline transition;
+  }
 }
