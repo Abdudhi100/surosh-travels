@@ -1,81 +1,128 @@
-// src/app/page.tsx
-import Link from "next/link";
+//app/page.tsx
+"use client"
 
+import { motion, Variants } from "framer-motion"
+import Hero from "@/components/sections/Hero"
+import ServicePreview from "@/components/sections/ServicesPreview"
+import About from "@/components/sections/About"
+import CTA from "@/components/sections/CTA"
+
+// Example static services (replace with Sanity data later)
 const services = [
-  { title: "Visa Processing", icon: "V" },
-  { title: "Hajj & Umrah", icon: "H" },
-  { title: "Education Abroad", icon: "E" },
-  { title: "Tours & Excursions", icon: "T" },
-];
+  {
+    _id: "1",
+    title: "Visa Processing",
+    description:
+      "Fast, reliable visa processing assistance for all major destinations.",
+    icon: "🛂",
+  },
+  {
+    _id: "2",
+    title: "Hajj & Umrah",
+    description:
+      "Seamless pilgrimage arrangements — flights, accommodation, and guidance.",
+    icon: "🕋",
+  },
+  {
+    _id: "3",
+    title: "Education Abroad",
+    description:
+      "End-to-end study abroad support from admission to visa facilitation.",
+    icon: "🎓",
+  },
+  {
+    _id: "4",
+    title: "Tours & Excursions",
+    description:
+      "Custom-tailored vacation packages for memorable global experiences.",
+    icon: "🌍",
+  },
+]
+
+// ✅ Fixed fade variant (typed correctly)
+const fadeInUp: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }, // easeOut curve
+  },
+}
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col min-h-screen font-sans bg-light-gray dark:bg-dark-gray text-dark-gray dark:text-white transition-colors duration-300">
-      
-      {/* Hero Section */}
-      <section
-        className="relative flex items-center justify-center text-center bg-cover bg-center py-32 sm:py-48"
-        style={{ backgroundImage: "url('/images/hero.jpg')" }}
+    <main className="flex flex-col min-h-screen font-sans bg-white dark:bg-dark-gray text-dark-gray dark:text-white transition-colors duration-300">
+      {/* 🌍 HERO SECTION */}
+      <motion.section
+        id="hero"
+        variants={fadeInUp}
+        initial="hidden"
+        animate="visible"
+        className="scroll-mt-20"
       >
-        <div className="absolute inset-0 bg-black/30 dark:bg-black/50" />
-        <div className="relative z-10 max-w-4xl px-6">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white drop-shadow-lg">
-            Your Journey, Our Priority
-          </h1>
-          <p className="mt-4 text-lg sm:text-xl md:text-2xl text-white/90 drop-shadow-md">
-            Surosh Travels Ltd – Visa, Hajj & Umrah, Education Abroad, Tours
-          </p>
-          <Link
-            href="/contact"
-            className="mt-8 inline-block bg-sky-blue text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-gold hover:text-navy transition-all duration-300"
-          >
-            Contact Us
-          </Link>
-        </div>
-      </section>
+        <Hero
+          title="Your Journey, Our Priority"
+          subtitle="Surosh Travels — offering exceptional Visa, Hajj & Umrah, Education Abroad, and Tourism services."
+          buttonText="Get Started Today"
+          buttonHref="/contact"
+          backgroundImage="/images/hero-banner.jpg"
+        />
+      </motion.section>
 
-      {/* Services Preview */}
-      <section className="max-w-7xl mx-auto py-20 px-6 sm:px-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-navy dark:text-white mb-12">
-          Our Services
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-          {services.map(({ title, icon }) => (
-            <div
-              key={title}
-              className="bg-white dark:bg-navy rounded-xl shadow-lg p-8 text-center flex flex-col items-center justify-center transition-transform transform hover:scale-105 hover:shadow-2xl"
-            >
-              <div className="w-16 h-16 mb-4 bg-gold rounded-full flex items-center justify-center text-navy font-bold text-xl drop-shadow-md">
-                {icon}
-              </div>
-              <h3 className="font-semibold text-lg sm:text-xl text-dark-gray dark:text-white">
-                {title}
-              </h3>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* ✨ Divider */}
+      <div className="h-[2px] w-24 bg-gold mx-auto my-12 opacity-40 rounded-full" />
 
-      {/* Blog / CTA Section */}
-      <section className="bg-navy text-white py-20 px-6 sm:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4 drop-shadow-md">
-            Explore Our Blog
-          </h2>
-          <p className="text-lg sm:text-xl mb-8 text-silver-gray">
-            Stay updated with travel tips, guides, and news curated for you.
-          </p>
-          <Link
-            href="/blog"
-            className="inline-block bg-sky-blue text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-gold hover:text-navy transition-all duration-300"
-          >
-            Read Our Blog
-          </Link>
-        </div>
-      </section>
+      {/* ✈️ SERVICES SECTION */}
+      <motion.section
+        id="services"
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="scroll-mt-20"
+      >
+        <ServicePreview
+          services={services}
+          ctaHref="/services"
+          ctaText="View All Services"
+        />
+      </motion.section>
 
-      {/* Footer Spacer */}
-      <div className="flex-1" />
-    </div>
-  );
+      {/* ✨ Divider */}
+      <div className="h-[2px] w-24 bg-gold mx-auto my-12 opacity-40 rounded-full" />
+
+      {/* 🧭 ABOUT SECTION */}
+      <motion.section
+        id="about"
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="scroll-mt-20"
+      >
+        <About />
+      </motion.section>
+
+      {/* ✨ Divider */}
+      <div className="h-[2px] w-24 bg-gold mx-auto my-12 opacity-40 rounded-full" />
+
+      {/* 🌟 CTA SECTION */}
+      <motion.section
+        id="cta"
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="scroll-mt-20"
+      >
+        <CTA
+          variant="dark"
+          title="Start Your Next Adventure with Surosh Travels"
+          subtitle="From your first inquiry to your safe return — we’re with you every step of the way."
+          buttonText="Book a Consultation"
+          buttonHref="/contact"
+        />
+      </motion.section>
+    </main>
+  )
 }

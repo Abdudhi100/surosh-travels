@@ -1,7 +1,7 @@
-// src/components/forms/ContactForm.tsx
 "use client"
 
 import { useState, ChangeEvent, FormEvent } from "react"
+import { Loader2, Send } from "lucide-react"
 
 type FormState = {
   name: string
@@ -52,29 +52,32 @@ export default function ContactForm() {
 
   if (submitted)
     return (
-      <div className="bg-green-50 border border-green-200 text-green-700 p-6 rounded-lg shadow-md text-center max-w-md mx-auto">
-        <h2 className="text-2xl font-semibold mb-2">Thank you!</h2>
-        <p>We will get back to you shortly.</p>
+      <div className="bg-[#F7F8FA] border border-[#C0C4C9] text-[#0A1E3F] p-8 rounded-2xl shadow-lg text-center max-w-md mx-auto">
+        <h2 className="text-2xl font-semibold mb-3 text-[#0A1E3F]">Thank you!</h2>
+        <p className="text-[#1F2933]">We’ve received your message and will reach out shortly.</p>
       </div>
     )
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-4 bg-white p-6 rounded-2xl shadow-lg max-w-md mx-auto"
+      className="flex flex-col gap-5 bg-white p-8 rounded-2xl shadow-lg border border-[#F7F8FA] max-w-md mx-auto transition-all hover:shadow-xl"
     >
+      <h2 className="text-2xl font-bold text-[#0A1E3F] mb-2">Get in Touch</h2>
+      <p className="text-sm text-[#1F2933] mb-4">We’re here to assist with all your travel needs.</p>
+
       {error && (
-        <p className="text-red-600 bg-red-50 border border-red-200 p-2 rounded text-center">
+        <p className="text-red-600 bg-red-50 border border-red-200 p-3 rounded-lg text-center">
           {error}
         </p>
       )}
 
       <input
         name="name"
-        placeholder="Name"
+        placeholder="Full Name"
         value={form.name}
         onChange={handleChange}
-        className="border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold transition"
+        className="border border-[#C0C4C9] px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD700] focus:border-[#FFD700] transition text-[#0A1E3F] placeholder-[#C0C4C9]"
         required
         autoComplete="name"
       />
@@ -82,20 +85,20 @@ export default function ContactForm() {
       <input
         name="email"
         type="email"
-        placeholder="Email"
+        placeholder="Email Address"
         value={form.email}
         onChange={handleChange}
-        className="border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold transition"
+        className="border border-[#C0C4C9] px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD700] focus:border-[#FFD700] transition text-[#0A1E3F] placeholder-[#C0C4C9]"
         required
         autoComplete="email"
       />
 
       <textarea
         name="message"
-        placeholder="Message"
+        placeholder="Your Message"
         value={form.message}
         onChange={handleChange}
-        className="border border-gray-300 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold transition"
+        className="border border-[#C0C4C9] px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD700] focus:border-[#FFD700] transition text-[#0A1E3F] placeholder-[#C0C4C9]"
         rows={5}
         required
       />
@@ -103,9 +106,19 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={loading}
-        className="bg-navy text-white px-6 py-2 rounded-lg hover:opacity-90 transition flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed"
+        className="flex justify-center items-center gap-2 bg-[#4DA6FF] text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:bg-[#0A1E3F] hover:shadow-lg transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        {loading ? "Sending..." : "Send Message"}
+        {loading ? (
+          <>
+            <Loader2 className="animate-spin w-5 h-5" />
+            Sending...
+          </>
+        ) : (
+          <>
+            <Send className="w-5 h-5" />
+            Send Message
+          </>
+        )}
       </button>
     </form>
   )
