@@ -1,22 +1,30 @@
 // src/components/forms/ContactForm.tsx
 "use client"
 
-import { useState } from "react"
+import { useState, ChangeEvent, FormEvent } from "react"
+
+type FormState = {
+  name: string
+  email: string
+  message: string
+}
 
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [form, setForm] = useState({ name: "", email: "", message: "" })
+  const [form, setForm] = useState<FormState>({ name: "", email: "", message: "" })
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setForm(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
     setError(null)
+
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -24,12 +32,19 @@ export default function ContactForm() {
         body: JSON.stringify(form),
       })
 
-      if (!res.ok) throw new Error("Failed to submit. Please try again.")
+      if (!res.ok) {
+        const errorText = await res.text()
+        throw new Error(errorText || "Failed to submit. Please try again.")
+      }
 
       setSubmitted(true)
       setForm({ name: "", email: "", message: "" })
-    } catch (err: any) {
-      setError(err.message || "An unexpected error occurred.")
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError("An unexpected error occurred.")
+      }
     } finally {
       setLoading(false)
     }
