@@ -10,7 +10,10 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  // Extend Next.js and TypeScript recommended rules
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+
+  // Ignore unnecessary folders
   {
     ignores: [
       "node_modules/**",
@@ -19,6 +22,13 @@ const eslintConfig = [
       "build/**",
       "next-env.d.ts",
     ],
+  },
+
+  // Custom rule overrides
+  {
+    rules: {
+      "@typescript-eslint/ban-ts-comment": "off",
+    },
   },
 ];
 

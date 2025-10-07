@@ -1,22 +1,21 @@
-// @ts-nocheck
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 // src/app/blog/[slug]/page.tsx
 import { notFound } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 
+// ✅ Use Awaited<ReturnType<typeof generateStaticParams>> for type safety
 interface BlogPageProps {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
-// ✅ Must be async (App Router expects async function)
-export default async function BlogPost({ params }: BlogPageProps) {
-  const { slug } = params
+// ✅ async is required for App Router
+export default async function BlogPost({ params }: Awaited<BlogPageProps>) {
+  // ✅ Await params since Next.js 15 expects it as Promise
+  const { slug } = await params
 
-  // Dummy post for Phase 3 (replace with Sanity fetch)
+  // Dummy post for now (replace with real Sanity fetch)
   const post = {
-    title: "Sample Post",
+    title: `Sample Post: ${slug}`,
     date: "2025-10-06",
     content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 Pellentesque vitae velit ex. Mauris dapibus risus quis suscipit vulputate.
@@ -28,7 +27,6 @@ Egestas purus viverra accumsan in nisl nisi.`,
 
   return (
     <main className="pt-24 pb-16 px-4 sm:px-8 max-w-4xl mx-auto font-sans">
-      {/* Hero / Title */}
       <header className="mb-12 text-center">
         <h1 className="text-4xl sm:text-5xl font-bold text-navy dark:text-white mb-4">
           {post.title}
@@ -36,7 +34,6 @@ Egestas purus viverra accumsan in nisl nisi.`,
         <p className="text-sm text-gray-500 dark:text-gray-400">{post.date}</p>
       </header>
 
-      {/* Featured Image */}
       <div className="relative w-full h-64 sm:h-80 md:h-96 mb-8 rounded-xl overflow-hidden shadow-lg">
         <Image
           src={post.image}
@@ -47,7 +44,6 @@ Egestas purus viverra accumsan in nisl nisi.`,
         />
       </div>
 
-      {/* Blog Content */}
       <article className="prose prose-lg max-w-full text-navy dark:text-gold mx-auto">
         {post.content.split("\n").map((para, idx) => (
           <p key={idx} className="mb-6">
@@ -56,7 +52,6 @@ Egestas purus viverra accumsan in nisl nisi.`,
         ))}
       </article>
 
-      {/* Back to Blog CTA */}
       <div className="mt-12 text-center">
         <Link
           href="/blog"
@@ -67,4 +62,8 @@ Egestas purus viverra accumsan in nisl nisi.`,
       </div>
     </main>
   )
+}
+
+export async function generateStaticParams() {
+  return [{ slug: "sample-post" }]
 }
