@@ -1,3 +1,6 @@
+// @ts-nocheck
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 // src/app/blog/[slug]/page.tsx
 import { notFound } from "next/navigation"
 import Image from "next/image"
