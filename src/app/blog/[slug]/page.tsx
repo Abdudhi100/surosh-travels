@@ -1,18 +1,20 @@
 // src/app/blog/[slug]/page.tsx
-"use client"
-
 import { notFound } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 
-interface Props {
-  params: { slug: string }
+interface BlogPageProps {
+  params: {
+    slug: string
+  }
 }
 
-// Dummy post for Phase 3 (replace with Sanity fetch)
-export default function BlogPost({ params }: Props) {
+// ✅ Server Component (no "use client")
+// ✅ Proper type for params
+export default async function BlogPost({ params }: BlogPageProps) {
   const { slug } = params
 
+  // Temporary static post (Phase 3: replace with Sanity fetch)
   const post = {
     title: "Sample Post",
     date: "2025-10-06",
@@ -22,11 +24,12 @@ Egestas purus viverra accumsan in nisl nisi.`,
     image: "/images/blog1.jpg",
   }
 
+  // Example check (replace with real logic later)
   if (!post) return notFound()
 
   return (
     <main className="pt-24 pb-16 px-4 sm:px-8 max-w-4xl mx-auto font-sans">
-      {/* Hero / Title */}
+      {/* Header */}
       <header className="mb-12 text-center">
         <h1 className="text-4xl sm:text-5xl font-bold text-navy dark:text-white mb-4">
           {post.title}
